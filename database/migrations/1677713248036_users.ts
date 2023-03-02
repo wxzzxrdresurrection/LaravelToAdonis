@@ -10,7 +10,7 @@ export default class extends BaseSchema {
       table.string('ap_paterno',60)
       table.string('ap_materno',60)
       table.string('email',100).unique()
-      table.string('password',180)
+      table.string('password')
       table.string('telefono',10)
       table.enum('active', ['1', '0']).defaultTo('0')
       table.integer('codigo').nullable()
