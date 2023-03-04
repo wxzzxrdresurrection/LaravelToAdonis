@@ -14,9 +14,8 @@ export default class extends BaseSchema {
       table.string('telefono',10)
       table.enum('active', ['1', '0']).defaultTo('0')
       table.integer('codigo').nullable()
-      table.integer('rol_id').unsigned().references('roles.id')
-      table.timestamp('created_at', { useTz: true })
-      table.timestamp('updated_at', { useTz: true })
+      table.integer('rol_id').unsigned().references('roles.id').defaultTo(2)
+      table.timestamps(true,true)
     })
   }
 

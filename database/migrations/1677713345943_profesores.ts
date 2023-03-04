@@ -9,8 +9,7 @@ export default class extends BaseSchema {
       table.string('nombre',40)
       table.string('ap_paterno',60)
       table.string('ap_materno',60)
-      table.timestamp('created_at', { useTz: true })
-      table.timestamp('updated_at', { useTz: true })
+      table.timestamps(true,true)
     })
   }
 

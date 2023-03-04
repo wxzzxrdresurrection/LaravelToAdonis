@@ -11,8 +11,7 @@ export default class extends BaseSchema {
       table.string('ap_materno',60)
       table.integer('edad')
       table.integer('carrera_id').unsigned().references('carreras.id')
-      table.timestamp('created_at', { useTz: true })
-      table.timestamp('updated_at', { useTz: true })
+      table.timestamps(true,true)
     })
   }
 
