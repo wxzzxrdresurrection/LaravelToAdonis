@@ -24,7 +24,7 @@ export default class User extends BaseModel {
   public password: string
 
   @column()
-  public role_id: number
+  public rol_id: number
 
   @column()
   public active: string
