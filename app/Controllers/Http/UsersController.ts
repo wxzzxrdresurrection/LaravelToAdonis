@@ -4,7 +4,7 @@ import User from 'App/Models/User'
 import Hash from '@ioc:Adonis/Core/Hash'
 import Route from '@ioc:Adonis/Core/Route'
 import Mail from '@ioc:Adonis/Addons/Mail'
-import { Request } from '@adonisjs/core/build/standalone'
+
 //import { HttpContext } from "@adonisjs/core/build/standalone";
 
 export default class UsersController {
@@ -99,10 +99,90 @@ export default class UsersController {
     user.codigo = Math.floor(Math.random() * 10000)
     user.save()
 
+    //MANDAR MENSAJE DE TEXTO CON CODIGO
+
+    return
+
+  }
+
+  public async verifyCode({request, response}: HttpContextContract) {
+
+    if(!request.hasValidSignature()){
+      return response.status(401).json({
+        status: 401,
+        message: 'La URL no es válida',
+        error: true,
+        data : null
+      })
+    }
+
+    await request.validate({schema: schema.create({
+
+      codigo: schema.string()
+      }),
+      messages:{
+        required : 'El campo {{field}} es requerido',
+      }
+    })
 
 
+    const user = await User.findOrFail(request.param('id'))
 
+    if(request.input('codigo') == user.codigo){
+      user.active = '1'
+      user.save()
+      return response.status(200).json({
+        status: 200,
+        message: 'Usuario activado correctamente',
+        error: false,
+        data : user
+      })
+    }
 
+    return response.status(400).json({
+      status: 400,
+      message: 'Error al activar usuario',
+      error: true,
+      data : null
+    })
+
+  }
+
+  public async login({request, response, auth}: HttpContextContract) {
+
+    await request.validate({schema: schema.create({
+        email: schema.string({},[
+          rules.email(),
+        ]),
+        password: schema.string({},[
+          rules.minLength(8),
+        ]),
+      }),messages:{
+        required : 'El campo {{field}} es requerido',
+        minLength: 'El campo {{field}} debe tener al menos {{options.minLength}} caracteres',
+        'email.email': 'El correo electrónico no es válido',
+      },
+    })
+
+    const user = await User.findByOrFail('email', request.input('email'))
+
+    if(!user || !(await Hash.verify(user.password, request.input('password')))){
+      return response.status(400).json({
+        status: 400,
+        message: 'Credenciales de usuario incorrectas',
+        error: true,
+        data : null
+      })
+    }
+
+    const token = await auth.use('api').generate(user)
+    return response.status(200).json({
+        status: 200,
+        message: 'Usuario autenticado correctamente',
+        error: null,
+        data : user,
+        token : token
+    })
 
 
   }
