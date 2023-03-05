@@ -126,7 +126,16 @@ export default class UsersController {
     })
 
 
-    const user = await User.findOrFail(request.param('id'))
+    const user = await User.find(request.param('id'))
+
+    if(!user){
+      return response.status(400).json({
+        status: 400,
+        message: 'El usuario no existe',
+        error: true,
+        data : null
+      })
+    }
 
     if(request.input('codigo') == user.codigo){
       user.active = '1'
@@ -164,7 +173,7 @@ export default class UsersController {
       },
     })
 
-    const user = await User.findByOrFail('email', request.input('email'))
+    const user = await User.findBy('email', request.input('email'))
 
     if(!user || !(await Hash.verify(user.password, request.input('password')))){
       return response.status(400).json({
