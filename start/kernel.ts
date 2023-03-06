@@ -41,4 +41,6 @@ Server.middleware.register([
 |
 */
 Server.middleware.registerNamed({
+  active : () => import('App/Middleware/VerifyActive'),
+  rol: () => import('App/Middleware/VerifyRole'),
 })

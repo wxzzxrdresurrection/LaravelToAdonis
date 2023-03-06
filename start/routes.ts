@@ -23,6 +23,9 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
   Route.post('register','UsersController.register')
-  Route.get('mail','UsersController.verifyEmail')
+  Route.get('email','UsersController.verifyEmail').as('email')
+  Route.get('sms','UsersController.verifySms').as('sms')
   Route.post('login','UsersController.login')
 }).prefix('escuela')
+
+Route.group(() => {}).prefix('escuela').middleware('active')

@@ -196,6 +196,19 @@ export default class UsersController {
 
   }
 
+  public async logout({response, auth}: HttpContextContract) {
+
+    await auth.use('api').revoke()
+
+    return response.status(200).json({
+      status: 200,
+      message: 'Sesión cerrada correctamente',
+      error: null,
+      data : null
+    })
+
+  }
+
 }
 
 
