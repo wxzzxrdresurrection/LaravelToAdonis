@@ -4,6 +4,7 @@ import User from 'App/Models/User'
 import Hash from '@ioc:Adonis/Core/Hash'
 import Route from '@ioc:Adonis/Core/Route'
 import Mail from '@ioc:Adonis/Addons/Mail'
+const { Vonage } = require('@vonage/server-sdk')
 
 //import { HttpContext } from "@adonisjs/core/build/standalone";
 
@@ -100,8 +101,18 @@ export default class UsersController {
     user.save()
 
     //MANDAR MENSAJE DE TEXTO CON CODIGO
+    const vonage = new Vonage({
+      apiKey: "a72cb7d2",
+      apiSecret: "JTOM8ZOCLTfcjeaH"
+    })
+    const from = "Vonage APIs"
+    const to = "52" + user.telefono
+    const text = 'Tu código de verificación es: ' + user.codigo.toString()
 
-    return
+    await vonage.sms.send({to, from, text})
+
+    //REGRESAR UNA VISTA
+    //return
 
   }
 

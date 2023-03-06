@@ -25,6 +25,7 @@
     "@adonisjs/lucid": "^18.3.0",
     "@adonisjs/mail": "^8.1.2",
     "@adonisjs/repl": "^3.1.11",
+    "@vonage/server-sdk": "^3.1.1",
     "luxon": "^3.2.1",
     "mysql2": "^3.1.2",
     "phc-bcrypt": "^1.0.8",
